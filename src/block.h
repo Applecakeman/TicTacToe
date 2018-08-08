@@ -5,34 +5,48 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <string>
+#include "texture.h"
 
 class Block
 {
     public:
-        //constructor and deconstructor
-        Block(int posX, int posY, SDL_Renderer* renderer);
+      //constructor and deconstructor
+      Block(int posX, int posY, SDL_Renderer* renderer);
+      ~Block(){}; //empty at the moment
 
-        //constants
-        static const int WIDTH = 80;
-        static const int HEIGHT = 80;
+      //enum
+      enum eMark { NONE, O, X };
 
-        //methods
-        bool isClicked();
-        bool getIsEmpty(){return this->_isEmpty;};
-        SDL_Rect getRect(){return this->mRect;};
-        void mark(int shape, SDL_Renderer* renderer, SDL_Texture* texture);
+      //constants
+      static const int WIDTH = 80;
+      static const int HEIGHT = 80;
+
+      //methods
+      void input(SDL_Event* e);
+      void render(SDL_Renderer* renderer);
+      void mark(int mark, SDL_Renderer* renderer);
+
+      //properties
+      bool getClicked(){return mClicked;};
+      void setClicked(bool clicked){mClicked = clicked;};
+      eMark getMark(){return mMark;};
 
     private:
-        //enum
-        enum eShape { O, X };
+      //objects
+      SDL_Rect mRect;
+      Texture mX;
+      Texture mO;
 
-        //objects
-        SDL_Rect mRect;
+      //flags
+      bool mClicked;
+      eMark mMark;
 
-        //flags
-        bool _isEmpty;
-        //methods
+      struct stPosition {
+        int x;
+        int y;
+      } mPosition;
+
+      //methods
 
 };
-
 #endif //BLOCK_H
